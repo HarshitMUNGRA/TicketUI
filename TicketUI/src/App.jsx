@@ -18,20 +18,63 @@ const initialValues = {
 }
 
 const validationSchema = Yup.object({
-  ConcertId: Yup.number().required('Required'),
-  Email: Yup.string().email('Invalid').required('Required'),
-  Name: Yup.string().required('Required'),
-  Phone: Yup.string().required('Required'),
-  Quantity: Yup.number().required('Required'),
-  CreditCard: Yup.string().required('Required'),
-  Expiration: Yup.string().required('Required'),
-  SecurityCode: Yup.string().required('Required'),
-  Address: Yup.string().required('Required'),
-  City: Yup.string().required('Required'),
-  Province: Yup.string().required('Required'),
-  PostalCode: Yup.string().required('Required'),
-  Country: Yup.string().required('Required')
+  ConcertId: Yup.number()
+    .typeError('ConcertId must be a number.')
+    .positive('ConcertId must be a positive integer.')
+    .required('ConcertId is required.'),
+
+  Email: Yup.string()
+    .email('Invalid email address.')
+    .required('Email is required.'),
+
+  Name: Yup.string()
+    .matches(/^[A-Za-z]+$/, 'Name cannot contain numbers.')
+    .min(2, 'Name must be at least 2 characters long.')
+    .max(100, 'Name cannot exceed 100 characters.')
+    .required('Name is required.'),
+
+  Phone: Yup.string()
+    .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits.')
+    .required('Phone number is required.'),
+
+  Quantity: Yup.number()
+    .typeError('Quantity must be a number.')
+    .positive('Quantity must be a positive integer.')
+    .required('Quantity is required.'),
+
+  CreditCard: Yup.string()
+    .matches(/^\d{12}$/, 'Credit card number must be exactly 12 digits.')
+    .required('Credit card number is required.'),
+
+  Expiration: Yup.string()
+    .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Expiration must be in MM/YY format.')
+    .required('Expiration date is required.'),
+
+  SecurityCode: Yup.string()
+    .matches(/^\d{3}$/, 'Security code must be exactly 3 digits.')
+    .required('Security code is required.'),
+
+  Address: Yup.string()
+    .max(200, 'Address cannot be longer than 200 characters.')
+    .required('Address is required.'),
+
+  City: Yup.string()
+    .max(100, 'City cannot be longer than 100 characters.')
+    .required('City is required.'),
+
+  Province: Yup.string()
+    .max(50, 'Province cannot be longer than 50 characters.')
+    .required('Province is required.'),
+
+  PostalCode: Yup.string()
+    .length(6, 'Postal code must be exactly 6 characters.')
+    .required('Postal code is required.'),
+
+  Country: Yup.string()
+    .max(100, 'Country cannot be longer than 100 characters.')
+    .required('Country is required.')
 })
+
 
 export default function App() {
   const formik = useFormik({
